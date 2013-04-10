@@ -7,6 +7,9 @@
 #import "KalView.h"       // for the KalViewDelegate protocol
 #import "KalDataSource.h" // for the KalDataSourceCallbacks protocol
 
+#define kKalNotificationSelectedDate @"KalSelectedDate"
+
+
 @class KalLogic, KalDate;
 
 /*

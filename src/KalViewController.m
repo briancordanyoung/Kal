@@ -104,6 +104,7 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
   [dataSource loadItemsFromDate:from toDate:to];
   [tableView reloadData];
   [tableView flashScrollIndicators];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kKalNotificationSelectedDate object:self];
 }
 
 - (void)showPreviousMonth
