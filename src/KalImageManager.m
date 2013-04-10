@@ -10,8 +10,19 @@
 
 @implementation KalImageManager
 
+static NSString * imagePathFormat = @"Kal.bundle/%@";
+
++ (void)setImagePathFormat:(NSString *)format {
+    imagePathFormat = [format copy];
+}
+
 + (UIImage *)imageNamed:(NSString *)name {
-    return [UIImage imageNamed:[NSString stringWithFormat:@"Kal.bundle/%@", name]];
+    NSString * path = [NSString stringWithFormat:imagePathFormat, name];
+    UIImage * result = [UIImage imageNamed:path];
+    if (!result) {
+        result = [UIImage imageWithContentsOfFile:path];
+    }
+    return result;
 }
 
 @end
