@@ -30,6 +30,8 @@ void mach_absolute_difference(uint64_t end, uint64_t start, struct timespec *tp)
 
 NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotification";
 
+extern const CGSize kTileSize;
+
 @interface KalViewController ()
 @property (nonatomic, retain, readwrite) NSDate *initialDate;
 @property (nonatomic, retain, readwrite) NSDate *selectedDate;
@@ -184,7 +186,8 @@ NSString *const KalDataSourceChangedNotification = @"KalDataSourceChangedNotific
 {
   if (!self.title)
     self.title = @"Calendar";
-  KalView *kalView = [[[KalView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] delegate:self logic:logic] autorelease];
+  CGRect appframe = [[UIScreen mainScreen] applicationFrame];
+  KalView *kalView = [[[KalView alloc] initWithFrame:CGRectMake(appframe.origin.x, appframe.origin.y, 7 * kTileSize.width, appframe.size.height) delegate:self logic:logic] autorelease];
   self.view = kalView;
   tableView = kalView.tableView;
   tableView.dataSource = dataSource;
