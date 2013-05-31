@@ -33,7 +33,7 @@
    * from a local Sqlite database. For this demo, I am going to set it up to just use
    * the Sqlite database.
    */
-  kal.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStyleBordered target:self action:@selector(showAndSelectToday)] autorelease];
+  kal.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStyleBordered target:self action:@selector(showAndSelectToday)];
   kal.delegate = self;
   dataSource = [[HolidaySqliteDataSource alloc] init];
   kal.dataSource = dataSource;
@@ -56,19 +56,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   Holiday *holiday = [dataSource holidayAtIndexPath:indexPath];
-  HolidaysDetailViewController *vc = [[[HolidaysDetailViewController alloc] initWithHoliday:holiday] autorelease];
+  HolidaysDetailViewController *vc = [[HolidaysDetailViewController alloc] initWithHoliday:holiday];
   [navController pushViewController:vc animated:YES];
 }
 
 #pragma mark -
 
-- (void)dealloc
-{
-  [kal release];
-  [dataSource release];
-  [window release];
-  [navController release];
-  [super dealloc];
-}
 
 @end

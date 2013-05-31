@@ -168,7 +168,7 @@
             return NO;
         
         [json appendString:colon];
-        if (![self appendValue:[fragment objectForKey:value] into:json]) {
+        if (![self appendValue:fragment[value] into:json]) {
             [self addErrorWithCode:EUNSUPPORTED description:[NSString stringWithFormat:@"Unsupported value for key %@ in object", value]];
             return NO;
         }
@@ -185,7 +185,7 @@
     
     static NSMutableCharacterSet *kEscapeChars;
     if( ! kEscapeChars ) {
-        kEscapeChars = [[NSMutableCharacterSet characterSetWithRange: NSMakeRange(0,32)] retain];
+        kEscapeChars = [NSMutableCharacterSet characterSetWithRange: NSMakeRange(0,32)];
         [kEscapeChars addCharactersInString: @"\"\\"];
     }
     
