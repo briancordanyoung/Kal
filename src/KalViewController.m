@@ -42,16 +42,33 @@ extern const CGSize kTileSize;
 
 @synthesize dataSource, delegate, initialDate, selectedDate;
 
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    if ((self = [super initWithCoder:aDecoder])) {
+        
+        NSDate *date = [NSDate date];
+        [self configureWithDate: date];
+    }
+    return self;
+}
+
 - (id)initWithSelectedDate:(NSDate *)date
 {
   if ((self = [super init])) {
+      [self configureWithDate: date];
+  }
+  return self;
+}
+
+-(void)configureWithDate:(NSDate *)date
+{
+    NSLog(@"configuring with date");
+    
     logic = [[KalLogic alloc] initForDate:date];
     self.initialDate = date;
     self.selectedDate = date;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(significantTimeChangeOccurred) name:UIApplicationSignificantTimeChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:KalDataSourceChangedNotification object:nil];
-  }
-  return self;
 }
 
 - (id)init
