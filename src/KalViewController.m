@@ -61,9 +61,7 @@ extern const CGSize kTileSize;
 }
 
 -(void)configureWithDate:(NSDate *)date
-{
-    NSLog(@"configuring with date");
-    
+{    
     logic = [[KalLogic alloc] initForDate:date];
     self.initialDate = date;
     self.selectedDate = date;
