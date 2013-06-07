@@ -30,6 +30,7 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
 @implementation KalGridView
 
 @synthesize selectedTile, highlightedTile, transitioning;
+@synthesize backgroundView;
 
 - (id)initWithFrame:(CGRect)frame logic:(KalLogic *)theLogic delegate:(id<KalViewDelegate>)theDelegate
 {
@@ -70,10 +71,19 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
   CGContextFillRect(UIGraphicsGetCurrentContext(), line);
 }
 
-- (void)sizeToFit
+- (void)setBackgroundView:(UIView *)view
 {
-  self.height = frontMonthView.height;
+  if (backgroundView != view) {
+    [backgroundView removeFromSuperview];
+    backgroundView = view;
+    backgroundView.frame = self.bounds;
+    backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:backgroundView];
+    [self sendSubviewToBack:backgroundView];
+    [self setNeedsDisplay]; // see drawRect:
+  }
 }
+
 
 #pragma mark -
 #pragma mark Touches
