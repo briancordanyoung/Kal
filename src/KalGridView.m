@@ -61,6 +61,14 @@ static NSString *kSlideAnimationId = @"KalSwitchMonths";
   return self;
 }
 
+- (void)sizeToFit
+{
+  self.height = frontMonthView.height;
+}
+
+#pragma mark -
+#pragma mark Appearance
+
 - (void)drawRect:(CGRect)rect
 {
   [[KalImageManager imageNamed:@"kal_grid_background.png"] drawInRect:rect];

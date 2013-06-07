@@ -20,8 +20,11 @@ static NSString * imagePathFormat = @"Kal.bundle/%@";
     NSString * path = [NSString stringWithFormat:imagePathFormat, name];
     UIImage * result = [UIImage imageNamed:path];
     if (!result) {
+        NSLog(@"Could not find imageNamed: %@",name);
         result = [UIImage imageWithContentsOfFile:path];
+        if (!result) NSLog(@"Could not find image at path: %@",path);
     }
+
     return result;
 }
 
