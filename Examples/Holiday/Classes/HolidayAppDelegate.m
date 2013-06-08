@@ -21,7 +21,9 @@
    * If your application requires an arbitrary starting date, use -[KalViewController initWithSelectedDate:]
    * instead of -[KalViewController init].
    */
-  kal = [[KalViewController alloc] init];
+    
+  NSDate *aDayWithMarkers = [NSDate dateWithTimeIntervalSince1970: 1323216000];
+  kal = [[KalViewController alloc] initWithSelectedDate: aDayWithMarkers];
   kal.title = @"Holidays";
 
   /*
