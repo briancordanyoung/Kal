@@ -288,10 +288,8 @@ static NSMutableDictionary *defaultAppearance = nil;
   [self setNeedsDisplay];
 }
 
-//- (KalTileState)state { return *(int *)(&flags); }
 - (KalTileState)state
 {
-    KalTileState oldWayToCalculateState = *(int *)(&flags);
     
     KalTileState currentState = KalTileStateNormal;
     
@@ -305,8 +303,6 @@ static NSMutableDictionary *defaultAppearance = nil;
         currentState = (currentState | KalTileStateAdjacent | KalTileStateToday);
     }
     
-    NSLog(@"KalTileState Old: %d   New: %d", oldWayToCalculateState, currentState );
-
     return currentState;
 }
 
