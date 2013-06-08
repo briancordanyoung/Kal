@@ -12,11 +12,11 @@ extern const CGSize kTileSize;
 
 // UIAppearanceContainer
 
-static NSString *kAppearancBackgroundImageAttribute = @"backgroundImage";
-static NSString *kAppearancTextColorAttribute = @"textColor";
-static NSString *kAppearancShadowColorImageAttribute = @"shadowColor";
-static NSString *kAppearancMarkerImageImageAttribute = @"markerImage";
-static NSString *kAppearancReversesShadowImageAttribute = @"reversesShadow";
+static NSString *kAppearanceBackgroundImageAttribute     = @"backgroundImage";
+static NSString *kAppearanceTextColorAttribute           = @"textColor";
+static NSString *kAppearanceShadowColorImageAttribute    = @"shadowColor";
+static NSString *kAppearanceMarkerImageImageAttribute    = @"markerImage";
+static NSString *kAppearanceReversesShadowImageAttribute = @"reversesShadow";
 
 
 
@@ -44,87 +44,91 @@ static NSMutableDictionary *defaultAppearance = nil;
     
     defaultAppearance = [[NSMutableDictionary alloc] init];
     
+    /* Background */
     [self setAppearance:defaultAppearance
                   value:[[KalImageManager imageNamed:@"kal_tile_today.png"]
                              stretchableImageWithLeftCapWidth:6
                              topCapHeight:0]
-                 forKey:kAppearancBackgroundImageAttribute
+                 forKey:kAppearanceBackgroundImageAttribute
                   state:KalTileStateToday];
     
     [self setAppearance:defaultAppearance
                   value:[[KalImageManager imageNamed:@"kal_tile_today_selected.png"]
                              stretchableImageWithLeftCapWidth:6
                              topCapHeight:0]
-                 forKey:kAppearancBackgroundImageAttribute
+                 forKey:kAppearanceBackgroundImageAttribute
                   state:KalTileStateToday | KalTileStateSelected];
     
     [self setAppearance:defaultAppearance
                   value:[[KalImageManager imageNamed:@"kal_tile_selected.png"]
                              stretchableImageWithLeftCapWidth:1
                              topCapHeight:0]
-                 forKey:kAppearancBackgroundImageAttribute
+                 forKey:kAppearanceBackgroundImageAttribute
                   state:KalTileStateSelected];
     
     [self setAppearance:defaultAppearance
                   value:[UIColor colorWithPatternImage:
                             [KalImageManager imageNamed:@"kal_tile_text_fill.png"]]
-                 forKey:kAppearancTextColorAttribute
+                 forKey:kAppearanceTextColorAttribute
                   state:KalTileStateNormal];
     
+    /* Text */
     [self setAppearance:defaultAppearance
                   value:[UIColor whiteColor]
-                 forKey:kAppearancTextColorAttribute
+                 forKey:kAppearanceTextColorAttribute
                   state:KalTileStateToday];
     
     [self setAppearance:defaultAppearance
                   value:[UIColor whiteColor]
-                 forKey:kAppearancTextColorAttribute
+                 forKey:kAppearanceTextColorAttribute
                   state:KalTileStateSelected];
     
     [self setAppearance:defaultAppearance
                   value:[UIColor colorWithPatternImage:
                             [KalImageManager imageNamed:@"kal_tile_dim_text_fill.png"]]
-                 forKey:kAppearancTextColorAttribute
+                 forKey:kAppearanceTextColorAttribute
                   state:KalTileStateAdjacent];
     
+      /* Shadow */
     [self setAppearance:defaultAppearance
                   value:[UIColor whiteColor]
-                 forKey:kAppearancShadowColorImageAttribute
+                 forKey:kAppearanceShadowColorImageAttribute
                   state:KalTileStateNormal];
     
     [self setAppearance:defaultAppearance
                   value:[UIColor blackColor]
-                 forKey:kAppearancShadowColorImageAttribute
+                 forKey:kAppearanceShadowColorImageAttribute
                   state:KalTileStateToday];
     
     [self setAppearance:defaultAppearance
                   value:[UIColor blackColor]
-                 forKey:kAppearancShadowColorImageAttribute
+                 forKey:kAppearanceShadowColorImageAttribute
                   state:KalTileStateSelected];
     
     [self setAppearance:defaultAppearance
                   value:nil
-                 forKey:kAppearancShadowColorImageAttribute
+                 forKey:kAppearanceShadowColorImageAttribute
                   state:KalTileStateAdjacent];
     
+      /* Marker */
     [self setAppearance:defaultAppearance
                   value:[KalImageManager imageNamed:@"kal_marker.png"]
-                 forKey:kAppearancMarkerImageImageAttribute
+                 forKey:kAppearanceMarkerImageImageAttribute
                   state:KalTileStateNormal];
     
     [self setAppearance:defaultAppearance
                   value:[KalImageManager imageNamed:@"kal_marker_today.png"]
-                 forKey:kAppearancMarkerImageImageAttribute
+                 forKey:kAppearanceMarkerImageImageAttribute
                   state:KalTileStateToday];
     
     [self setAppearance:defaultAppearance
                   value:[KalImageManager imageNamed:@"kal_marker_selected.png"]
-                 forKey:kAppearancMarkerImageImageAttribute
+                 forKey:kAppearanceMarkerImageImageAttribute
                   state:KalTileStateSelected];
     
     [self setAppearance:defaultAppearance
                   value:[KalImageManager imageNamed:@"kal_marker_dim.png"]
-                 forKey:kAppearancMarkerImageImageAttribute
+                 forKey:kAppearanceMarkerImageImageAttribute
                   state:KalTileStateAdjacent];
   });
 }
@@ -284,7 +288,27 @@ static NSMutableDictionary *defaultAppearance = nil;
   [self setNeedsDisplay];
 }
 
-- (KalTileState)state { return *(int *)(&flags); }
+//- (KalTileState)state { return *(int *)(&flags); }
+- (KalTileState)state
+{
+    KalTileState oldWayToCalculateState = *(int *)(&flags);
+    
+    KalTileState currentState = KalTileStateNormal;
+    
+    if (flags.selected) currentState = (currentState | KalTileStateSelected);
+    if (flags.highlighted) currentState = (currentState | KalTileStateHighlighted);
+    if (flags.marked) currentState = (currentState | KalTileStateMarked);
+    if (flags.type == KalTileTypeAdjacent) currentState = (currentState | KalTileStateAdjacent);
+    if (flags.type == KalTileTypeToday) currentState = (currentState | KalTileStateToday);
+    if (flags.type == (KalTileTypeAdjacent | KalTileTypeToday))
+    {
+        currentState = (currentState | KalTileStateAdjacent | KalTileStateToday);
+    }
+    
+    NSLog(@"KalTileState Old: %d   New: %d", oldWayToCalculateState, currentState );
+
+    return currentState;
+}
 
 
 - (BOOL)isToday { return flags.type == KalTileTypeToday; }
@@ -297,57 +321,57 @@ static NSMutableDictionary *defaultAppearance = nil;
 
 - (void)setBackgroundImage:(UIImage *)image forState:(KalTileState)state
 {
-  [KalTileView setAppearance:appearance value:image forKey:kAppearancBackgroundImageAttribute state:state];
+  [KalTileView setAppearance:appearance value:image forKey:kAppearanceBackgroundImageAttribute state:state];
   [self setNeedsDisplay];
 }
 
 - (void)setMarkerImage:(UIImage *)image forState:(KalTileState)state
 {
-  [KalTileView setAppearance:appearance value:image forKey:kAppearancMarkerImageImageAttribute state:state];
+  [KalTileView setAppearance:appearance value:image forKey:kAppearanceMarkerImageImageAttribute state:state];
   [self setNeedsDisplay];
 }
 
 - (void)setTextColor:(UIColor *)color forState:(KalTileState)state
 {
-  [KalTileView setAppearance:appearance value:color forKey:kAppearancTextColorAttribute state:state];
+  [KalTileView setAppearance:appearance value:color forKey:kAppearanceTextColorAttribute state:state];
   [self setNeedsDisplay];
 }
 
 - (void)setShadowColor:(UIColor *)color forState:(KalTileState)state
 {
-  [KalTileView setAppearance:appearance value:color forKey:kAppearancShadowColorImageAttribute state:state];
+  [KalTileView setAppearance:appearance value:color forKey:kAppearanceShadowColorImageAttribute state:state];
   [self setNeedsDisplay];
 }
 
 - (void)setReversesShadow:(NSInteger)flag forState:(KalTileState)state
 {
-  [KalTileView setAppearance:appearance value:[NSNumber numberWithBool:flag] forKey:kAppearancReversesShadowImageAttribute state:state];
+  [KalTileView setAppearance:appearance value:[NSNumber numberWithBool:flag] forKey:kAppearanceReversesShadowImageAttribute state:state];
   [self setNeedsDisplay];
 }
 
 - (UIImage *)markerImageForState:(KalTileState)state
 {
-  return [self attributeForKey:kAppearancMarkerImageImageAttribute state:state];
+  return [self attributeForKey:kAppearanceMarkerImageImageAttribute state:state];
 }
 
 - (UIImage *)backgroundImageForState:(KalTileState)state
 {
-  return [self attributeForKey:kAppearancBackgroundImageAttribute state:state];
+  return [self attributeForKey:kAppearanceBackgroundImageAttribute state:state];
 }
 
 - (UIColor *)textColorForState:(KalTileState)state
 {
-  return [self attributeForKey:kAppearancTextColorAttribute state:state];
+  return [self attributeForKey:kAppearanceTextColorAttribute state:state];
 }
 
 - (UIColor *)shadowColorForState:(KalTileState)state
 {
-  return [self attributeForKey:kAppearancShadowColorImageAttribute state:state];
+  return [self attributeForKey:kAppearanceShadowColorImageAttribute state:state];
 }
 
 - (BOOL)reversesShadowForState:(KalTileState)state
 {
-  return [[self attributeForKey:kAppearancReversesShadowImageAttribute state:state] boolValue];
+  return [[self attributeForKey:kAppearanceReversesShadowImageAttribute state:state] boolValue];
 }
 
 - (void)setShadowOffset:(CGSize)offset

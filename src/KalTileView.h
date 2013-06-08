@@ -47,7 +47,6 @@ typedef NSUInteger KalTileState;
 @property (nonatomic, readonly) KalTileState state;
 
 - (void)resetState;
-- (BOOL)isToday;
 
 @property (nonatomic) CGSize shadowOffset UI_APPEARANCE_SELECTOR;
 
