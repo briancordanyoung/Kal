@@ -24,7 +24,7 @@ typedef NSUInteger KalTileState;
 
 @class KalDate;
 
-@interface KalTileView : UIView<UIAppearanceContainer>
+@interface KalTileView : UIView <UIAppearanceContainer>
 {
   KalDate *date;
   CGPoint origin;
@@ -58,6 +58,7 @@ typedef NSUInteger KalTileState;
 			  forState:(KalTileState)state UI_APPEARANCE_SELECTOR;        // an image that will be drawn at size {4,5}
 - (void)setTextColor:(UIColor *)color
 			forState:(KalTileState)state UI_APPEARANCE_SELECTOR;
+- (void)setFont:(UIFont *)font forState:(KalTileState)state;
 - (void)setShadowColor:(UIColor *)color
 			  forState:(KalTileState)state UI_APPEARANCE_SELECTOR;
 
@@ -66,5 +67,6 @@ typedef NSUInteger KalTileState;
 - (UIImage *)markerImageForState:(KalTileState)state UI_APPEARANCE_SELECTOR;        
 - (UIColor *)textColorForState:(KalTileState)state UI_APPEARANCE_SELECTOR;
 - (UIColor *)shadowColorForState:(KalTileState)state UI_APPEARANCE_SELECTOR;
+- (UIFont *)fontForState:(KalTileState)state;
 
 @end

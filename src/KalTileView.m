@@ -14,6 +14,7 @@ extern const CGSize kTileSize;
 
 static NSString *kAppearanceBackgroundImageAttribute     = @"backgroundImage";
 static NSString *kAppearanceTextColorAttribute           = @"textColor";
+static NSString *kAppearanceFontAttribute                = @"font";
 static NSString *kAppearanceShadowColorImageAttribute    = @"shadowColor";
 static NSString *kAppearanceMarkerImageImageAttribute    = @"markerImage";
 static NSString *kAppearanceReversesShadowImageAttribute = @"reversesShadow";
@@ -70,6 +71,12 @@ static NSMutableDictionary *defaultAppearance = nil;
                   value:[UIColor colorWithPatternImage:
                             [KalImageManager imageNamed:@"kal_tile_text_fill.png"]]
                  forKey:kAppearanceTextColorAttribute
+                  state:KalTileStateNormal];
+
+    /* Font */
+    [self setAppearance:defaultAppearance
+                  value:[UIFont boldSystemFontOfSize:24.f]
+                 forKey:kAppearanceFontAttribute
                   state:KalTileStateNormal];
     
     /* Text */
@@ -150,15 +157,16 @@ static NSMutableDictionary *defaultAppearance = nil;
 
 - (void)drawRect:(CGRect)rect
 {
+  int state = self.state;
+
   CGContextRef ctx = UIGraphicsGetCurrentContext();
-  CGFloat fontSize = 24.f;
-  UIFont *font = [UIFont boldSystemFontOfSize:fontSize];
-  CGContextSelectFont(ctx, [font.fontName cStringUsingEncoding:NSUTF8StringEncoding], fontSize, kCGEncodingMacRoman);
-      
+    
+  UIFont *font = [self fontForState:state];
+  CGContextSelectFont(ctx, [font.fontName cStringUsingEncoding:NSUTF8StringEncoding], font.pointSize, kCGEncodingMacRoman);
+    
   CGContextTranslateCTM(ctx, 0, kTileSize.height);
   CGContextScaleCTM(ctx, 1, -1);
   
-  int state = self.state;
   UIColor *textColor = [self textColorForState:state];
   UIColor *shadowColor = [self shadowColorForState:state];
   UIImage *markerImage = [self markerImageForState:state];
@@ -333,6 +341,12 @@ static NSMutableDictionary *defaultAppearance = nil;
   [self setNeedsDisplay];
 }
 
+- (void)setFont:(UIFont *)font forState:(KalTileState)state
+{
+    [KalTileView setAppearance:appearance value:font forKey:kAppearanceFontAttribute state:state];
+    [self setNeedsDisplay];
+}
+
 - (void)setShadowColor:(UIColor *)color forState:(KalTileState)state
 {
   [KalTileView setAppearance:appearance value:color forKey:kAppearanceShadowColorImageAttribute state:state];
@@ -358,6 +372,11 @@ static NSMutableDictionary *defaultAppearance = nil;
 - (UIColor *)textColorForState:(KalTileState)state
 {
   return [self attributeForKey:kAppearanceTextColorAttribute state:state];
+}
+
+- (UIFont *)fontForState:(KalTileState)state
+{
+    return [self attributeForKey:kAppearanceFontAttribute state:state];
 }
 
 - (UIColor *)shadowColorForState:(KalTileState)state
