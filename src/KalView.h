@@ -37,14 +37,20 @@
  *       +-----------------------------------------+
  *
  */
-@interface KalView : UIView
+@interface KalView : UIView <UIAppearanceContainer>
 {
-  UILabel *headerTitleLabel;
   KalGridView *gridView;
   UITableView *tableView;
   UIImageView *shadowView;
   id<KalViewDelegate> __unsafe_unretained delegate;
   KalLogic *logic;
+
+  NSMutableDictionary *appearance;
+  UILabel *headerTitleLabel;
+  UIImageView *backgroundView;
+    UIButton *previousMonthButton;
+    UIButton *nextMonthButton;
+    NSArray *weekdayLabels;
 }
 
 @property (nonatomic, unsafe_unretained) id<KalViewDelegate> delegate;
@@ -63,7 +69,41 @@
 - (void)slideUp;
 - (void)jumpToSelectedMonth;    // change months without animation (i.e. when directly switching to "Today")
 
+
+- (void)setHeaderBackgroundImage:(UIImage *)image UI_APPEARANCE_SELECTOR;
+- (void)setPreviousMonthButtonImage:(UIImage *)image UI_APPEARANCE_SELECTOR;
+- (void)setNextMonthButtonImage:(UIImage *)image UI_APPEARANCE_SELECTOR;
+
+- (void)setHeaderFont:(UIFont *)font UI_APPEARANCE_SELECTOR;
+- (void)setHeaderTextColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
+- (void)setHeaderShadowColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
+- (void)setHeaderShadowOffset:(CGSize)offset UI_APPEARANCE_SELECTOR;
+- (void)setWeekdayFont:(UIFont *)font UI_APPEARANCE_SELECTOR;
+- (void)setWeekdayTextColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
+- (void)setWeekdayShadowColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
+- (void)setWeekdayShadowOffset:(CGSize)offset UI_APPEARANCE_SELECTOR;
+
+- (void)setFooterShadowImage:(UIImage *)image UI_APPEARANCE_SELECTOR;
+
+- (UIImage *)headerBackgroundImage UI_APPEARANCE_SELECTOR;
+- (UIImage *)previousMonthButtonImage UI_APPEARANCE_SELECTOR;
+- (UIImage *)nextMonthButtonImage UI_APPEARANCE_SELECTOR;
+- (UIFont *)headerFont UI_APPEARANCE_SELECTOR;
+- (UIColor *)headerTextColor UI_APPEARANCE_SELECTOR;
+- (UIColor *)headerShadowColor UI_APPEARANCE_SELECTOR;
+- (CGSize)headerShadowOffset UI_APPEARANCE_SELECTOR;
+- (UIFont *)weekdayFont UI_APPEARANCE_SELECTOR;
+- (UIColor *)weekdayTextColor UI_APPEARANCE_SELECTOR;
+- (UIColor *)weekdayShadowColor UI_APPEARANCE_SELECTOR;
+- (CGSize)weekdayShadowOffset UI_APPEARANCE_SELECTOR;
+- (UIImage *)footerShadowImage UI_APPEARANCE_SELECTOR;
+
+
 @end
+
+
+
+
 
 #pragma mark -
 
@@ -74,5 +114,6 @@
 - (void)showPreviousMonth;
 - (void)showFollowingMonth;
 - (void)didSelectDate:(KalDate *)date;
+
 
 @end

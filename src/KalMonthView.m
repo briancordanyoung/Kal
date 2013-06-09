@@ -57,6 +57,7 @@ extern const CGSize kTileSize;
 
 - (void)drawRect:(CGRect)rect
 {
+    // TODO: create image setter method to allow for customization and appearance proxy
   CGContextRef ctx = UIGraphicsGetCurrentContext();
   CGContextDrawTiledImage(ctx, (CGRect){CGPointZero,kTileSize}, [[KalImageManager imageNamed:@"kal_tile.png"] CGImage]);
 }
