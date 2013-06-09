@@ -133,7 +133,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				D3C0E1771764331E00C79102 /* CoreText.framework */,
 				533B291011E355A000B3CC07 /* Kal Library */,
 				533B282811E2D35200B3CC07 /* JSON */,
 				080E96DDFE201D6D7F000001 /* Classes */,
@@ -168,6 +167,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D3C0E1771764331E00C79102 /* CoreText.framework */,
 				533B285211E2D42300B3CC07 /* libsqlite3.dylib */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
