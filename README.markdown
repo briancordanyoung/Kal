@@ -16,7 +16,7 @@ Release Notes
 Bringing Kal in to the modern iOS age, requiring iOS 6
 
 * Refactored to modern Objective-C 2.0
-* Now uses ARC
+* Refactored to ARC
 * Pulled in [pegli/Kal image_manager branch](https://github.com/pegli/Kal/commits/image_manager) (at 5/8/13) 
     * adds a simple KalImageManager class to centralize how the path to an image is contructed.
     * adds kKalNotificationSelectedDate notification.
