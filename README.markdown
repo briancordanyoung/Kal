@@ -9,6 +9,12 @@ This project aims to provide an open-source implementation of the month view in 
 
 In order to use Kal in your application, you will need to provide an implementation of the KalDataSource protocol to satisfy these responsibilities. Please see KalDataSource.h and the included demo app for more details.
 
+Roadmap
+-------------
+**June 9, 2013**
+
+For my purposes, I would like to be able to add multiple markers that are laid out in each tile. I want to try to keep the API consistant with the Kal project, but I haven't worked out if that's going to be a good idea yet.  The default look of Kal should always remain the Month View in Apple's Calendar app.
+
 Release Notes
 -------------
 
