@@ -31,6 +31,7 @@
 		533B288B11E2D46E00B3CC07 /* UIViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 533B287511E2D46E00B3CC07 /* UIViewAdditions.m */; };
 		AA747D9F0F9514B9006C5449 /* Kal_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* Kal_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
+		D3C0E17617642E8A00C79102 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3C0E17517642E8A00C79102 /* CoreText.framework */; };
 		DA553CD71715CB4B003E7B1D /* KalImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DA553CD51715CB4B003E7B1D /* KalImageManager.h */; };
 		DA553CD81715CB4B003E7B1D /* KalImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DA553CD61715CB4B003E7B1D /* KalImageManager.m */; };
 /* End PBXBuildFile section */
@@ -62,6 +63,7 @@
 		AA747D9E0F9514B9006C5449 /* Kal_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kal_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libKal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKal.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3C0E17517642E8A00C79102 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		DA553CD51715CB4B003E7B1D /* KalImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KalImageManager.h; sourceTree = "<group>"; };
 		DA553CD61715CB4B003E7B1D /* KalImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KalImageManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,6 +74,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */,
+				D3C0E17617642E8A00C79102 /* CoreText.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +105,7 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D3C0E17517642E8A00C79102 /* CoreText.framework */,
 				AACBBE490F95108600F1A2B1 /* Foundation.framework */,
 			);
 			name = Frameworks;

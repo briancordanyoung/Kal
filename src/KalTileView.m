@@ -7,17 +7,22 @@
 #import "KalTileView.h"
 #import "KalDate.h"
 #import "KalPrivate.h"
+#import <CoreText/CoreText.h>
 
 extern const CGSize kTileSize;
 
 // UIAppearanceContainer
 
-static NSString *kAppearanceBackgroundImageAttribute     = @"backgroundImage";
-static NSString *kAppearanceTextColorAttribute           = @"textColor";
-static NSString *kAppearanceFontAttribute                = @"font";
-static NSString *kAppearanceShadowColorImageAttribute    = @"shadowColor";
-static NSString *kAppearanceMarkerImageImageAttribute    = @"markerImage";
-static NSString *kAppearanceReversesShadowImageAttribute = @"reversesShadow";
+static NSString *kAppearanceBackgroundImageAttribute      = @"backgroundImage";
+static NSString *kAppearanceTextColorAttribute            = @"textColor";
+static NSString *kAppearanceFontAttribute                 = @"font";
+static NSString *kAppearanceShadowColorImageAttribute     = @"shadowColor";
+static NSString *kAppearanceMarkerImageImageAttribute     = @"markerImage";
+static NSString *kAppearanceShadowOffsetAttribute         = @"shadowOffset";
+static NSString *kAppearanceReversesShadowImageAttribute  = @"reversesShadow";
+static NSString *kAppearanceTextAlignmentAttribute        = @"textAlignment";
+static NSString *kAppearanceEdgeInsetsAttribute           = @"edgeInsets";
+static NSString *kAppearanceAdjacentHighlightColorAttribute = @"adjacentHighlightColor";
 
 
 
@@ -36,7 +41,6 @@ static NSMutableDictionary *defaultAppearance = nil;
 @implementation KalTileView
 
 @synthesize date;
-@synthesize shadowOffset;
 
 + (void)initialize
 {
@@ -45,6 +49,17 @@ static NSMutableDictionary *defaultAppearance = nil;
     
     defaultAppearance = [[NSMutableDictionary alloc] init];
     
+      /* Position */
+      [self setAppearance:defaultAppearance
+                    value:[NSValue valueWithUIEdgeInsets: UIEdgeInsetsMake(12, 0, 0, 5)]
+                   forKey:kAppearanceEdgeInsetsAttribute
+                    state:KalTileStateNormal];
+      
+      [self setAppearance:defaultAppearance
+                    value:[NSNumber numberWithInteger: NSTextAlignmentCenter]
+                   forKey:kAppearanceTextAlignmentAttribute
+                    state:KalTileStateNormal];
+
     /* Background */
     [self setAppearance:defaultAppearance
                   value:[[KalImageManager imageNamed:@"kal_tile_today.png"]
@@ -117,6 +132,12 @@ static NSMutableDictionary *defaultAppearance = nil;
                  forKey:kAppearanceShadowColorImageAttribute
                   state:KalTileStateAdjacent];
     
+      /* Shaow Offset */
+      [self setAppearance:defaultAppearance
+                    value:[NSValue valueWithCGPoint: CGPointMake( 0, 1) ]
+                   forKey:kAppearanceShadowOffsetAttribute
+                    state:KalTileStateNormal];
+
       /* Marker */
     [self setAppearance:defaultAppearance
                   value:[KalImageManager imageNamed:@"kal_marker.png"]
@@ -137,6 +158,12 @@ static NSMutableDictionary *defaultAppearance = nil;
                   value:[KalImageManager imageNamed:@"kal_marker_dim.png"]
                  forKey:kAppearanceMarkerImageImageAttribute
                   state:KalTileStateAdjacent];
+      
+      /* Highlight Color when clicking on a day in an adjacent month */
+    [self setAppearance:defaultAppearance
+                  value:[UIColor colorWithWhite:0.25f alpha:0.3f]
+                 forKey:kAppearanceAdjacentHighlightColorAttribute
+                  state:KalTileStateNormal];
   });
 }
 
@@ -157,45 +184,88 @@ static NSMutableDictionary *defaultAppearance = nil;
 
 - (void)drawRect:(CGRect)rect
 {
-  int state = self.state;
-
-  CGContextRef ctx = UIGraphicsGetCurrentContext();
+    KalTileState state = self.state;
     
-  UIFont *font = [self fontForState:state];
-  CGContextSelectFont(ctx, [font.fontName cStringUsingEncoding:NSUTF8StringEncoding], font.pointSize, kCGEncodingMacRoman);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
     
-  CGContextTranslateCTM(ctx, 0, kTileSize.height);
-  CGContextScaleCTM(ctx, 1, -1);
-  
-  UIColor *textColor = [self textColorForState:state];
-  UIColor *shadowColor = [self shadowColorForState:state];
-  UIImage *markerImage = [self markerImageForState:state];
-  UIImage *backgroundImage = [self backgroundImageForState:state];
-  
-  [backgroundImage drawInRect:CGRectMake(0, -1, kTileSize.width+1, kTileSize.height+1)];
-  
-  if (flags.marked)
-    [markerImage drawInRect:CGRectMake(21.f, 5.f, 4.f, 5.f)];
-  
-  NSUInteger n = [self.date day];
-  NSString *dayText = [NSString stringWithFormat:@"%lu", (unsigned long)n];
-  const char *day = [dayText cStringUsingEncoding:NSUTF8StringEncoding];
-  CGSize textSize = [dayText sizeWithFont:font];
-  CGFloat textX, textY;
-  textX = roundf(0.5f * (kTileSize.width - textSize.width));
-  textY = 6.f + roundf(0.5f * (kTileSize.height - textSize.height));
-  if (shadowColor) {
-    [shadowColor setFill];
-    int sign = [self reversesShadowForState:state] ? -1 : 1;
-    CGContextShowTextAtPoint(ctx, textX + shadowOffset.width, textY - sign * shadowOffset.height, day, n >= 10 ? 2 : 1);
-  }
-  [textColor setFill];
-  CGContextShowTextAtPoint(ctx, textX, textY, day, n >= 10 ? 2 : 1);
-  
-  if (self.highlighted) {
-    [[UIColor colorWithWhite:0.25f alpha:0.3f] setFill];
-    CGContextFillRect(ctx, CGRectMake(0.f, 0.f, kTileSize.width, kTileSize.height));
-  }
+    UIFont *font = [self fontForState:state];
+    CGContextSelectFont(ctx, [font.fontName cStringUsingEncoding:NSUTF8StringEncoding], font.pointSize, kCGEncodingMacRoman);
+    
+    CGContextTranslateCTM(ctx, 0, kTileSize.height);
+    CGContextScaleCTM(ctx, 1, -1);
+    
+    UIColor *textColor = [self textColorForState:state];
+    UIColor *shadowColor = [self shadowColorForState:state];
+    UIImage *markerImage = [self markerImageForState:state];
+    UIImage *backgroundImage = [self backgroundImageForState:state];
+    UIEdgeInsets insets = [self edgeInsets];
+    UITextAlignment alignment = [self textAlignment];
+    
+    [backgroundImage drawInRect:CGRectMake(0, -1, kTileSize.width+1, kTileSize.height+1)];
+    
+    if (flags.marked)
+    {
+        //      [markerImage drawInRect:CGRectMake(21.f, 5.f, 4.f, 5.f)];
+        //      NSLog(@"Marker Image Size: h %d w %d", (int) markerImage.size.height,  (int)  markerImage.size.width);
+        CGFloat markerLeft = (kTileSize.width / 2) - (markerImage.size.width / 2);
+        
+        CGRect markerDrawRect = CGRectMake(markerLeft, insets.bottom, markerImage.size.width, markerImage.size.height);
+        [markerImage drawInRect: markerDrawRect];
+        
+        //      NSLog(@"Marker Draw Rect: x %d  y %d   w %d  h %d",
+        //            (int) markerDrawRect.origin.x ,
+        //            (int) markerDrawRect.origin.y ,
+        //            (int) markerDrawRect.size.width,
+        //            (int) markerDrawRect.size.height);
+        //
+        //      CGRect oldMarkerDrawRect = CGRectMake(21.f, 5.f, 4.f, 5.f);
+        //      NSLog(@"Old    Draw Rect: x %d  y %d   w %d  h %d",
+        //            (int) oldMarkerDrawRect.origin.x ,
+        //            (int) oldMarkerDrawRect.origin.y ,
+        //            (int) oldMarkerDrawRect.size.width,
+        //            (int) oldMarkerDrawRect.size.height);
+    }
+    
+    NSUInteger n = [self.date day];
+    NSString *dayText = [NSString stringWithFormat:@"%lu", (unsigned long)n];
+    const char *day = [dayText cStringUsingEncoding:NSUTF8StringEncoding];
+    CGSize textSize = [dayText sizeWithFont: font];
+    
+    // Use some CoreText functions to calculate the
+    // exact height of the actual number font glyphs used.
+    NSDictionary *dayTextAttributes = @{NSFontAttributeName: font};
+    NSAttributedString *dayTextWithFont =
+        [[NSAttributedString alloc] initWithString:dayText  attributes:dayTextAttributes];
+    CTLineRef line = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)(dayTextWithFont));
+    CGRect actualTextRect = CTLineGetImageBounds( line, ctx );
+    CGSize actualTextSize = actualTextRect.size;
+    
+    CGFloat textX, textY;
+    
+    textY = (kTileSize.height - actualTextSize.height - insets.top);
+    
+    // Align Numbers Text
+    textX = roundf(0.5f * (kTileSize.width - textSize.width)); // Centered and Justified
+    if (alignment == NSTextAlignmentLeft) textX = insets.left;
+    if (alignment == NSTextAlignmentRight)  textX = kTileSize.width - actualTextSize.width - insets.right;
+    
+    // Draw the Numbers Shadow
+    if (shadowColor) {
+        [shadowColor setFill];
+        int sign = [self reversesShadowForState:state] ? -1 : 1;
+        CGSize shadowOffset = [self shadowOffsetForState: state];
+        CGContextShowTextAtPoint(ctx, textX + shadowOffset.width, textY - sign * shadowOffset.height, day, n >= 10 ? 2 : 1);
+    }
+    
+    // Draw the Numbers Text
+    [textColor setFill];
+    CGContextShowTextAtPoint(ctx, textX, textY, day, n >= 10 ? 2 : 1);
+    
+    // Highlighting an day of an adjacent month
+    if (self.highlighted) {
+        [self.adjacentHighlightColor setFill];
+        CGContextFillRect(ctx, CGRectMake(0.f, 0.f, kTileSize.width, kTileSize.height));
+    }
 }
 
 - (void)resetState
@@ -211,7 +281,6 @@ static NSMutableDictionary *defaultAppearance = nil;
   flags.highlighted = NO;
   flags.selected = NO;
   flags.marked = NO;
-  shadowOffset = CGSizeMake(0, 1);
 }
 
 - (void)setDate:(KalDate *)aDate
@@ -325,38 +394,92 @@ static NSMutableDictionary *defaultAppearance = nil;
 
 - (void)setBackgroundImage:(UIImage *)image forState:(KalTileState)state
 {
-  [KalTileView setAppearance:appearance value:image forKey:kAppearanceBackgroundImageAttribute state:state];
+  [KalTileView setAppearance:appearance
+                       value:image
+                      forKey:kAppearanceBackgroundImageAttribute
+                       state:state];
   [self setNeedsDisplay];
 }
 
 - (void)setMarkerImage:(UIImage *)image forState:(KalTileState)state
 {
-  [KalTileView setAppearance:appearance value:image forKey:kAppearanceMarkerImageImageAttribute state:state];
+  [KalTileView setAppearance:appearance
+                       value:image
+                      forKey:kAppearanceMarkerImageImageAttribute
+                       state:state];
   [self setNeedsDisplay];
 }
 
 - (void)setTextColor:(UIColor *)color forState:(KalTileState)state
 {
-  [KalTileView setAppearance:appearance value:color forKey:kAppearanceTextColorAttribute state:state];
+  [KalTileView setAppearance:appearance
+                       value:color
+                      forKey:kAppearanceTextColorAttribute
+                       state:state];
   [self setNeedsDisplay];
 }
 
 - (void)setFont:(UIFont *)font forState:(KalTileState)state
 {
-    [KalTileView setAppearance:appearance value:font forKey:kAppearanceFontAttribute state:state];
+    [KalTileView setAppearance:appearance
+                         value:font
+                        forKey:kAppearanceFontAttribute
+                         state:state];
     [self setNeedsDisplay];
 }
 
 - (void)setShadowColor:(UIColor *)color forState:(KalTileState)state
 {
-  [KalTileView setAppearance:appearance value:color forKey:kAppearanceShadowColorImageAttribute state:state];
+  [KalTileView setAppearance:appearance
+                       value:color
+                      forKey:kAppearanceShadowColorImageAttribute
+                       state:state];
   [self setNeedsDisplay];
+}
+
+- (void)setShadowOffset:(CGSize)shadowOffset forState:(KalTileState)state
+{
+    [KalTileView setAppearance:appearance
+                         value:[NSValue valueWithCGSize: shadowOffset]
+                        forKey:kAppearanceShadowOffsetAttribute
+                         state:state];
+    [self setNeedsDisplay];
 }
 
 - (void)setReversesShadow:(NSInteger)flag forState:(KalTileState)state
 {
-  [KalTileView setAppearance:appearance value:[NSNumber numberWithBool:flag] forKey:kAppearanceReversesShadowImageAttribute state:state];
-  [self setNeedsDisplay];
+    [KalTileView setAppearance:appearance
+                         value:[NSNumber numberWithBool:flag]
+                        forKey:kAppearanceReversesShadowImageAttribute
+                         state:state];
+    [self setNeedsDisplay];
+}
+
+- (void)setTextAlignment:(NSTextAlignment)textAlignment
+{
+    [KalTileView setAppearance:appearance
+                         value:[NSNumber numberWithInteger:textAlignment]
+                        forKey:kAppearanceTextAlignmentAttribute
+                         state:KalTileStateNormal];
+    [self setNeedsDisplay];
+}
+
+- (void)setEdgeInsets:(UIEdgeInsets)edgeInsets
+{
+    [KalTileView setAppearance:appearance
+                         value:[NSValue valueWithUIEdgeInsets:edgeInsets]
+                        forKey:kAppearanceEdgeInsetsAttribute
+                         state:KalTileStateNormal];
+    [self setNeedsDisplay];
+}
+
+- (void)setAdjacentHighlightColor:(UIColor *)color
+{
+    [KalTileView setAppearance:appearance
+                         value:color
+                        forKey:kAppearanceAdjacentHighlightColorAttribute
+                         state:KalTileStateNormal];
+    [self setNeedsDisplay];
 }
 
 - (UIImage *)markerImageForState:(KalTileState)state
@@ -381,7 +504,12 @@ static NSMutableDictionary *defaultAppearance = nil;
 
 - (UIColor *)shadowColorForState:(KalTileState)state
 {
-  return [self attributeForKey:kAppearanceShadowColorImageAttribute state:state];
+    return [self attributeForKey:kAppearanceShadowColorImageAttribute state:state];
+}
+
+- (CGSize)shadowOffsetForState:(KalTileState)state
+{
+    return [[self attributeForKey:kAppearanceShadowOffsetAttribute state:state] CGSizeValue];
 }
 
 - (BOOL)reversesShadowForState:(KalTileState)state
@@ -389,11 +517,21 @@ static NSMutableDictionary *defaultAppearance = nil;
   return [[self attributeForKey:kAppearanceReversesShadowImageAttribute state:state] boolValue];
 }
 
-- (void)setShadowOffset:(CGSize)offset
+- (NSTextAlignment)textAlignment
 {
-    shadowOffset = offset;
-    [self setNeedsDisplay];
+    return [[self attributeForKey:kAppearanceTextAlignmentAttribute state:KalTileStateNormal] integerValue];
 }
+
+- (UIEdgeInsets)edgeInsets
+{
+    return [[self attributeForKey:kAppearanceEdgeInsetsAttribute state:KalTileStateNormal] UIEdgeInsetsValue];
+}
+
+- (UIColor *)adjacentHighlightColor
+{
+    return [self attributeForKey:kAppearanceAdjacentHighlightColorAttribute state:KalTileStateNormal];
+}
+
 
 #pragma mark -
 
@@ -404,7 +542,7 @@ static NSMutableDictionary *defaultAppearance = nil;
     valueForState = [NSMutableDictionary dictionary];
     [appearance setObject:valueForState forKey:key];
   }
-  [valueForState setObject:(value ?: [NSNull null]) forKey:[NSNumber numberWithInt:state]];
+  [valueForState setObject:(value ?: [NSNull null]) forKey:[NSNumber numberWithUnsignedInteger:state]];
 }
 
 + (BOOL)appearance:(NSDictionary *)appearance hasValue:(id *)outValue forKey:(NSString *)key state:(KalTileState)state

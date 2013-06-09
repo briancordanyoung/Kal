@@ -48,25 +48,40 @@ typedef NSUInteger KalTileState;
 
 - (void)resetState;
 
-@property (nonatomic) CGSize shadowOffset UI_APPEARANCE_SELECTOR;
+// NSInteger instead of BOOL, in order to comply with the UIAppearanceContainer constraints
+- (void)setReversesShadow:(NSInteger)flag
+				 forState:(KalTileState)state UI_APPEARANCE_SELECTOR;
 
-- (void)setReversesShadow:(NSInteger)flag 
-				 forState:(KalTileState)state UI_APPEARANCE_SELECTOR;      // NSInteger instead of BOOL, in order to comply with the UIAppearanceContainer constraints
-- (void)setBackgroundImage:(UIImage *)image 
-				  forState:(KalTileState)state UI_APPEARANCE_SELECTOR;    // an image that will be drawn at size {47,45}
+// an image that will be drawn at size {47,45}
+- (void)setBackgroundImage:(UIImage *)image
+				  forState:(KalTileState)state UI_APPEARANCE_SELECTOR;
+
+// an image that will be drawn at size {4,5}
 - (void)setMarkerImage:(UIImage *)image
-			  forState:(KalTileState)state UI_APPEARANCE_SELECTOR;        // an image that will be drawn at size {4,5}
+			  forState:(KalTileState)state UI_APPEARANCE_SELECTOR;
+
 - (void)setTextColor:(UIColor *)color
 			forState:(KalTileState)state UI_APPEARANCE_SELECTOR;
 - (void)setFont:(UIFont *)font forState:(KalTileState)state;
 - (void)setShadowColor:(UIColor *)color
 			  forState:(KalTileState)state UI_APPEARANCE_SELECTOR;
 
+- (void)setShadowOffset:(CGSize)shadowOffset
+               forState:(KalTileState)state UI_APPEARANCE_SELECTOR;
+
+- (void)setTextAlignment:(NSTextAlignment)textAlignment UI_APPEARANCE_SELECTOR;
+- (void)setEdgeInsets:(UIEdgeInsets)edgeInsets UI_APPEARANCE_SELECTOR;
+- (void)setAdjacentHighlightColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
+
 - (BOOL)reversesShadowForState:(KalTileState)state UI_APPEARANCE_SELECTOR;
 - (UIImage *)backgroundImageForState:(KalTileState)state UI_APPEARANCE_SELECTOR;
 - (UIImage *)markerImageForState:(KalTileState)state UI_APPEARANCE_SELECTOR;        
 - (UIColor *)textColorForState:(KalTileState)state UI_APPEARANCE_SELECTOR;
 - (UIColor *)shadowColorForState:(KalTileState)state UI_APPEARANCE_SELECTOR;
-- (UIFont *)fontForState:(KalTileState)state;
+- (UIFont *)fontForState:(KalTileState)state UI_APPEARANCE_SELECTOR;
+- (CGSize)shadowOffsetForState:(KalTileState)state UI_APPEARANCE_SELECTOR;
+- (NSTextAlignment)textAlignment UI_APPEARANCE_SELECTOR;
+- (UIEdgeInsets)edgeInsets UI_APPEARANCE_SELECTOR;
+- (UIColor *)adjacentHighlightColor UI_APPEARANCE_SELECTOR;
 
 @end
