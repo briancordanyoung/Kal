@@ -12,7 +12,7 @@ In order to use Kal in your application, you will need to provide an implementat
 Release Notes
 -------------
 
-** June 8, 2013 **
+**June 8, 2013**
 Bringing Kal in to the modern iOS age, requiring iOS 6
 
 * Refactored to modern Objective-C 2.0
@@ -22,18 +22,18 @@ Bringing Kal in to the modern iOS age, requiring iOS 6
     * adds kKalNotificationSelectedDate notification.
 * Pulled in [peirlis/Kal UIAppearance branch](https://github.com/pierlis/Kal/commit/UIAppearance) (at 11/23/2012)
     * KalTileView now conforms to UIAppearanceContainer
-* Fixed bug from [peirlis/Kal UIAppearance branch](https://github.com/pierlis/Kal/commit/UIAppearance): `<-(KalTileState)state;>`  returned incorrect state
+* Fixed bug from [peirlis/Kal UIAppearance branch](https://github.com/pierlis/Kal/commit/UIAppearance): `-(KalTileState)state:`  returned incorrect state
 * Added more customizations for KalTileView. The Full list is now:
-    * `<setTextAlignment:>`
-    * `<setEdgeInsets:>`
-    * `<setAdjacentHighlightColor:>`
-    * `<setShadowOffset:forState:>`
-    * `<setFont:forState:>`
-    * `<setTextColor:forState:>` from [peirlis/Kal UIAppearance branch](https://github.com/pierlis/Kal/commit/UIAppearance) 
-    * `<setShadowColor:forState:  >` from [peirlis/Kal UIAppearance branch](https://github.com/pierlis/Kal/commit/UIAppearance) 
-    * `<setReversesShadow:forState:  >` from [peirlis/Kal UIAppearance branch](https://github.com/pierlis/Kal/commit/UIAppearance) 
-* Kal now better supports storyboards with the addition of `<-(id)initWithCoder:>` to KalViewController
-    * It is still better to create an instance programmatically within another UIViewController so that you can use  `<initWithSelectedDate:>` and build it first with the correct date.  Once an instance is created, I couldn't change the date AND have it draw correctly, until it was first visable.
+    * `setTextAlignment:`
+    * `setEdgeInsets:`
+    * `setAdjacentHighlightColor:`
+    * `setShadowOffset:forState:`
+    * `setFont:forState:`
+    * `setTextColor:forState:` from [peirlis/Kal UIAppearance branch](https://github.com/pierlis/Kal/commit/UIAppearance) 
+    * `setShadowColor:forState:` from [peirlis/Kal UIAppearance branch](https://github.com/pierlis/Kal/commit/UIAppearance) 
+    * `setReversesShadow:forState:` from [peirlis/Kal UIAppearance branch](https://github.com/pierlis/Kal/commit/UIAppearance) 
+* Kal now better supports storyboards with the addition of `-(id)initWithCoder:` to KalViewController
+    * It is still better to create an instance programmatically within another UIViewController so that you can use  `initWithSelectedDate:` and build it first with the correct date.  Once an instance is created, I couldn't change the date AND have it draw correctly, until it was first visable.
 
 **June 21, 2012**
 
