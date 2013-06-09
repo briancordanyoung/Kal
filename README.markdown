@@ -48,7 +48,7 @@ Bringing Kal in to the modern iOS age, requiring iOS 6
     * `setWeekdayTextColor:`
     * `setWeekdayShadowColor:`
     * `setWeekdayShadowOffset:`
-    * `setFooterShadowImage
+    * `setFooterShadowImage:`
 * Appearance and customizations todos:
     * I would like to add custmisation methods for the last 2 UIImages that can not be overriden from outside Kal
 	    * kal_grid_background.png (KalGridView.m)
