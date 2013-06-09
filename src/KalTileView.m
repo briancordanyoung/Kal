@@ -51,7 +51,7 @@ static NSMutableDictionary *defaultAppearance = nil;
     
       /* Position */
       [self setAppearance:defaultAppearance
-                    value:[NSValue valueWithUIEdgeInsets: UIEdgeInsetsMake(12, 0, 0, 5)]
+                    value:[NSValue valueWithUIEdgeInsets: UIEdgeInsetsMake(12, 5, 5, 5)]
                    forKey:kAppearanceEdgeInsetsAttribute
                     state:KalTileStateNormal];
       
