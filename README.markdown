@@ -13,6 +13,7 @@ Release Notes
 -------------
 
 **June 8, 2013**
+
 Bringing Kal in to the modern iOS age, requiring iOS 6
 
 * Refactored to modern Objective-C 2.0
