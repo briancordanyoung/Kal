@@ -18,6 +18,7 @@
 		533B297011E4A9AA00B3CC07 /* EventKitDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 533B296E11E4A9AA00B3CC07 /* EventKitDataSource.m */; };
 		533B297F11E4B26E00B3CC07 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 533B297E11E4B26E00B3CC07 /* EventKit.framework */; };
 		533B298111E4B27600B3CC07 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 533B298011E4B27600B3CC07 /* EventKitUI.framework */; };
+		D349AD0217644C9E00724F50 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D349AD0117644C9E00724F50 /* CoreText.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		533B297E11E4B26E00B3CC07 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		533B298011E4B27600B3CC07 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* NativeCal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NativeCal-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		D349AD0117644C9E00724F50 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D349AD0217644C9E00724F50 /* CoreText.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -126,6 +129,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D349AD0117644C9E00724F50 /* CoreText.framework */,
 				533B297E11E4B26E00B3CC07 /* EventKit.framework */,
 				533B298011E4B27600B3CC07 /* EventKitUI.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
