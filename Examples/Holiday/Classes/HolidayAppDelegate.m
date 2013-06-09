@@ -7,6 +7,7 @@
 #import "HolidaySqliteDataSource.h"
 #import "HolidaysDetailViewController.h"
 #import "Kal.h"
+#import "KalTileView.h"
 
 @implementation HolidayAppDelegate
 
@@ -39,6 +40,47 @@
   kal.delegate = self;
   dataSource = [[HolidaySqliteDataSource alloc] init];
   kal.dataSource = dataSource;
+
+    /* 
+     * Kal supports using UIAppearance proxy to customize the entire look of the
+     * control. Examples:
+     */
+//    id kalTileViewAppearance = [KalTileView appearance];
+//
+//    [kalTileViewAppearance setTextAlignment: UITextAlignmentLeft];
+//    [kalTileViewAppearance setEdgeInsets: UIEdgeInsetsMake(5, 5, 0, 7)];
+//    [kalTileViewAppearance setAdjacentHighlightColor: [UIColor colorWithWhite:0.289 alpha:0.210]];
+//    
+//    [kalTileViewAppearance setShadowOffset: CGSizeMake(0, 5)
+//                                  forState: KalTileStateNormal];
+//    [kalTileViewAppearance setFont:[UIFont fontWithName:@"AmericanTypewriter" size: 10]
+//                          forState:KalTileTypeRegular];
+//    [kalTileViewAppearance setTextColor:[UIColor colorWithWhite:0.7 alpha:1]
+//                               forState:KalTileStateAdjacent];
+//    [kalTileViewAppearance setTextColor:[UIColor colorWithRed:0.275 green:1.000 blue:0.000 alpha:1.000]
+//                               forState:KalTileStateMarked];
+//    [kalTileViewAppearance setTextColor:[UIColor colorWithRed:0.000 green:0.988 blue:1.000 alpha:1.000]
+//                               forState:KalTileStateMarked | KalTileStateSelected];
+//    [kalTileViewAppearance setTextColor:[UIColor whiteColor]
+//                               forState:KalTileStateAdjacent | KalTileStateSelected];
+//    UIColor *todayTextColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Kal.bundle/kal_tile_text_fill.png"]];
+//    [kalTileViewAppearance setTextColor:todayTextColor
+//                               forState:KalTileStateToday];
+//    [kalTileViewAppearance setTextColor:[UIColor colorWithRed:1.000 green:0.000 blue:0.165 alpha:1.000]
+//                               forState:KalTileStateToday | KalTileStateSelected];
+//
+//    [kalTileViewAppearance setShadowColor:[UIColor whiteColor]
+//                                 forState:KalTileStateToday];
+//    [kalTileViewAppearance setShadowColor:[UIColor colorWithWhite:0 alpha:0.2]
+//                                 forState:KalTileStateSelected];
+//    [kalTileViewAppearance setShadowColor:[UIColor colorWithWhite:0 alpha:0.2]
+//                                 forState:KalTileStateToday | KalTileStateSelected];
+//
+//    [kalTileViewAppearance setReversesShadow:YES
+//                                    forState:KalTileStateSelected];
+
+    
+    
   
   // Setup the navigation stack and display it.
   navController = [[UINavigationController alloc] initWithRootViewController:kal];
